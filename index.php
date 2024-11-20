@@ -27,6 +27,10 @@ if (isset($_POST['login'])) {
 <body class="bg-secondary-subtle">
     <div class="d-flex align-items-center justify-content-center vh-100">
         <div class="col-3">
+        <?php
+            // Display validation errors if any
+            echo displayErrors($errors ?? []);
+            ?>
             <!-- Server-Side Validation Messages should be placed here -->
             <div class="card">
                 <div class="card-body">
