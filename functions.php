@@ -22,7 +22,7 @@ function guardDashboard(){
     }
 }
 
- 
+
 function getConnection() {
     // Database configuration
     $host = 'localhost'; // Replace with your host
@@ -122,4 +122,6 @@ function displayErrors($errors) {
 
     return $errorHtml;
 }
+
+
 ?>
