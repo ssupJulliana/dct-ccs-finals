@@ -104,7 +104,7 @@ function validateLoginCredentials($email, $password) {
 function displayErrors($errors) {
     if (empty($errors)) return "";
 
-    $errorHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>System Alerts</strong><ul>';
+    $errorHtml = '<div class="col-3 mx-auto mt-2"><div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>System Alerts</strong><ul>';
 
     // Make sure each error is a string
     foreach ($errors as $error) {
@@ -117,7 +117,8 @@ function displayErrors($errors) {
         }
     }
 
-    $errorHtml .= '</ul><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    $errorHtml .= '</ul><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div></div>';
+    
 
     return $errorHtml;
 }
