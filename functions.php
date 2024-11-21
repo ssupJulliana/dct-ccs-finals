@@ -91,6 +91,22 @@ function login($email, $password) {
     }
 }
 
+function registerStudent($studentID, $firstName, $lastName) {
+    $conn = getConnection();
+    $query = "INSERT INTO students (student_id, first_name, last_name) VALUES (:student_id, :first_name, :last_name)";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':student_id', $studentID);
+    $stmt->bindParam(':first_name', $firstName);
+    $stmt->bindParam(':last_name', $lastName);
+    return $stmt->execute();
+}
+
+function fetchStudents() {
+    $conn = getConnection();
+    $stmt = $conn->query("SELECT * FROM students");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function fetchSubjects() {
     $conn = getConnection();  // Get the database connection
 
@@ -101,6 +117,10 @@ function fetchSubjects() {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Fetch all students from the database for display
+$conn = getConnection();
+$stmt = $conn->query("SELECT * FROM students");
+$allStudents = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 function validateLoginCredentials($email, $password) {

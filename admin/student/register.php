@@ -8,11 +8,27 @@ $dashboardPage = '../dashboard.php';   // Adjust the path to the dashboard
 $addSubjectPage = '../subject/add.php'; // Path to the 'add subject' page (relative to the current file)
 $logoutPage = '../logout.php';   // Path for logging out (adjusted)
 
-include '../partials/header.php'; 
-include '../partials/side-bar.php';
+
+
+
+
+// Validate the student data
+function validateStudentData($studentID, $firstName, $lastName) {
+    $errors = [];
+    if (empty($studentID)) {
+        $errors[] = "Student ID is required.";
+    }
+    if (empty($firstName)) {
+        $errors[] = "First name is required.";
+    }
+    if (empty($lastName)) {
+        $errors[] = "Last name is required.";
+    }
+    return $errors;
+}
 
 $errorMessage = ''; 
-
+$successMessage = '';   
 $studentID = '';  // Default value if not set
 $firstName = '';  // Default value if not set
 $lastName = '';   // Default value if not set
@@ -24,28 +40,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lastName = trim($_POST['last_name']);
 
     // Basic validation
-    if (empty($studentID) || empty($firstName) || empty($lastName)) {
-        $errorMessage = 'All fields are required.';
+    $validationErrors = validateStudentData($studentID, $firstName, $lastName);
+    if (count($validationErrors) > 0) {
+        $errorMessage = displayErrors($validationErrors);
     } else {
-        // Proceed to add the student to the database
-        $conn = getConnection();
-        $query = "INSERT INTO students (student_id, first_name, last_name) VALUES (:student_id, :first_name, :last_name)";
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':student_id', $studentID);
-        $stmt->bindParam(':first_name', $firstName);
-        $stmt->bindParam(':last_name', $lastName);
-
-        if ($stmt->execute()) {
-            // Redirect with a success parameter if the student was added
+        // Register the student if validation passes
+        $registerSuccess = registerStudent($studentID, $firstName, $lastName);
+        if ($registerSuccess) {
+            $successMessage = '';
+            // Redirect to refresh the page and show the new student
             header("Location: register.php?success=true");
             exit;
         } else {
-            $errorMessage = 'Failed to add the student. Please try again.';
+            $errorMessage = 'Failed to register student. Please try again.';
         }
     }
 }
 
+
+
+
 ?>
+
+<?php include '../partials/header.php'; ?>
+<?php include '../partials/side-bar.php'; ?>
 
 <!-- Main Content -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
@@ -61,16 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </nav>
 
     <?php if ($errorMessage): ?>
-        <div class="alert alert-danger mt-3">
-            <?php echo htmlspecialchars($errorMessage); ?>
+        <div class="alert alert-danger mt-2">
+            <?php echo $errorMessage; ?>
         </div>
     <?php endif; ?>
 
-    <?php if (isset($_GET['success']) && $_GET['success'] == 'true'): ?>
-        <div class="alert alert-success mt-3">
-            Student registered successfully!
-        </div>
-    <?php endif; ?>
+    
 
     <!-- Registration Form -->
     <div class="card p-4 mb-5">
