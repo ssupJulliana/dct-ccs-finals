@@ -91,6 +91,16 @@ function login($email, $password) {
     }
 }
 
+function fetchSubjects() {
+    $conn = getConnection();  // Get the database connection
+
+    // SQL query to select all subjects
+    $stmt = $conn->query("SELECT * FROM subjects"); 
+
+    // Return all subjects as an associative array
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 
 function validateLoginCredentials($email, $password) {

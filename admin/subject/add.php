@@ -13,6 +13,11 @@ include '../partials/side-bar.php';
 
 $errorMessage = '';
 
+$subjectCode = '';  // Default value if not set
+$subjectName = '';  // Default value if not set
+
+
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subjectCode = trim($_POST['subject_code']);
@@ -45,9 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- Main Content -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
-    <h1 class="h2">Add New Subject</h1>
-   
-          
+    <h1 class="h3" style="font-weight: normal;">Add New Subject</h1> 
+    <br> <br>
             
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb">
@@ -70,29 +74,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
 
-    <div class="card p-4 mb-5">
-                <form method="POST">
-                    <div class="mb-3">
-            <label for="subject_code" class="form-label">Subject Code</label>
-            <input type="text" class="form-control" id="subject_code" name="subject_code">
-        </div>
-        <div class="mb-3">
-            <label for="subject_name" class="form-label">Subject Name</label>
-            <input type= "text" class="form-control" id="subject_name" name="subject_name">
+    
+        <div>
+        <div class="card p-4 mb-5">
+        <form method="POST">
+            <div class="mb-3 form-floating">
+            <input type="text" class="form-control" id="subject_code" name="subject_code" 
+                        value="<?= htmlspecialchars($subjectCode, ENT_QUOTES, 'UTF-8') ?>" 
+                        placeholder="Subject Code">
+                        <label for="subject_code">Subject Code</label>
+    </div>
+        <div class="mb-3 form-floating">
+        <input type="text" class="form-control" id="subject_name" name="subject_name" 
+                        value="<?= htmlspecialchars($subjectName, ENT_QUOTES, 'UTF-8') ?>" 
+                        placeholder="Subject Name">
+                        <label for="subject_name">Subject Name</label>
         </div>
         <button type="submit" class="btn btn-primary w-100">Add Subject</button>
-  
+    </div>
 
-
- <!-- Subject List Table -->s
+ <!-- Subject List Table -->
  <div class="card p-4">
-        <h3 class="card-title text-center">Subject List</h3>
+        <h3 class="card-title text-left">Subject List</h3>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Actions</th>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -109,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <a href="edit.php?subject_code=<?= urlencode($subjectDetails['subject_code']) ?>" class="btn btn-info btn-sm">Edit</a>
 
                         <!-- Remove Option -->
-                        <a href="delete.php?subject_code=<?= urlencode($subjectDetails['subject_code']) ?>" class="btn btn-danger btn-sm">Remove</a>
+                        <a href="delete.php?subject_code=<?= urlencode($subjectDetails['subject_code']) ?>" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
