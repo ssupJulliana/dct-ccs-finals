@@ -3,6 +3,8 @@
 require'../functions.php'; // Include your functions.php for session checks
 guardDashboard(); 
 
+$subjectCount = countSubjects();
+$studentCount = countStudents();
 
 $logoutPage = 'logout.php';
 $addSubjectPage = './subject/add.php';
@@ -24,7 +26,7 @@ require './partials/side-bar.php';
             <div class="card border-primary mb-3">
                 <div class="card-header bg-primary text-white border-primary">Number of Subjects:</div>
                 <div class="card-body text-primary">
-                    <h5 class="card-title">0</h5>
+                <h5 class="card-title"><?php echo $subjectCount; ?></h5> <!-- Displaying the subject count -->
                 </div>
             </div>
         </div>
@@ -32,7 +34,7 @@ require './partials/side-bar.php';
             <div class="card border-primary mb-3">
                 <div class="card-header bg-primary text-white border-primary">Number of Students:</div>
                 <div class="card-body text-success">
-                    <h5 class="card-title">0</h5>
+                <h5 class="card-title"><?php echo $studentCount; ?></h5> <!-- Displaying the student count -->
                 </div>
             </div>
         </div>
