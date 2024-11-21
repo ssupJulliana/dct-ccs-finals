@@ -1,15 +1,15 @@
 <?php
 
-include '../../functions.php'; // Include your functions.php for database access and session management
-guardDashboard(); // Ensure the user is logged in
+include '../../functions.php';
+guardDashboard(); // // Include your functions.php for database access and session management
+// Ensure the user is logged in
 
 // Define page URLs for the sidebar
 $dashboardPage = '../dashboard.php';
 $addSubjectPage = './add.php'; // Path to the 'add subject' page
 $logoutPage = '../logout.php'; // Path for logging out
 
-include '../partials/header.php'; 
-include '../partials/side-bar.php';
+
 
 $errorMessage = '';
 $subjectCode = '';  // Default value if not set
@@ -18,19 +18,20 @@ $subjectName = '';  // Default value if not set
 // Check if a subject_code is passed via GET
 if (isset($_GET['subject_code'])) {
     $subjectCode = $_GET['subject_code'];
-
-    // Fetch the subject details to show to the user for editing
     $subjectDetails = getSubjectByCode($subjectCode);
-
-    if (!$subjectDetails) {
-        // If no such subject found, redirect back to the add page
-        header("Location: $addSubjectPage");
-        exit;
+    if ($subjectDetails) {
+        $subjectName = $subjectDetails['subject_name'];
+    } else {
+        // If subject is not found, redirect to add.php (or handle the error accordingly)
+        header("Location: add.php");
+        exit();
     }
-
-    // Set the subject name and subject code for the form fields
-    $subjectName = $subjectDetails['subject_name'];
+} else {
+    // If no subject code is provided, redirect to add.php
+    header("Location: add.php");
+    exit();
 }
+
 
 // Handle form submission for updating the subject
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -38,25 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subjectName = trim($_POST['subject_name']);
 
     // Basic validation
-    if (empty($subjectCode) || empty($subjectName)) {
-        $errorMessage = 'Both subject code and subject name are required.';
-    } else {
-        // Proceed to update the subject in the database
-        $conn = getConnection();
-        $query = "UPDATE subjects SET subject_name = :subject_name WHERE subject_code = :subject_code";
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':subject_code', $subjectCode);
-        $stmt->bindParam(':subject_name', $subjectName);
-
-        if ($stmt->execute()) {
-            // Redirect with a success parameter if the subject was updated
-            header("Location: edit.php?subject_code=$subjectCode&success=true");
-            exit;
-        } else {
-            $errorMessage = 'Failed to update the subject. Please try again.';
+    if (!empty($subjectCode) && !empty($subjectName)) {
+        // Update subject in the database
+        if (updateSubject($subjectCode, $subjectName)) {
+            // If update is successful, redirect to add.php
+            header("Location: add.php");
+            exit();
         }
     }
 }
+
+include '../partials/header.php'; 
+include '../partials/side-bar.php';
 
 ?>
 
