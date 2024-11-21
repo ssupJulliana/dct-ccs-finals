@@ -1,15 +1,16 @@
 <?php
 
 include '../../functions.php'; // Include your functions.php for database access and session management
-guardDashboard(); // Ensure the user is logged in
+
+guardDashboard(); //
+// Ensure the user is logged in
 
 // Define page URLs for the sidebar
 $dashboardPage = '../dashboard.php';   // Adjust the path to the dashboard// Path to the 'add subject' page (relative to the current file)
 $registerStudentPage = '../student/register.php';  // Path to the 'register student' page (adjusted)
 $logoutPage = '../logout.php';   // Path for logging out (adjusted)
 
-include '../partials/header.php'; 
-include '../partials/side-bar.php';
+
 
 $errorMessage = '';
 
@@ -44,6 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+include '../partials/header.php'; 
+include '../partials/side-bar.php';
+
 ?>
 
 
@@ -69,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <?php if (isset($_GET['success']) && $_GET['success'] == 'true'): ?>
-        <div class="alert alert-success mt-3">
-            Subject added successfully!
+        <div class="">
+
         </div>
     <?php endif; ?>
 

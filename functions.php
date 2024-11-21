@@ -157,7 +157,18 @@ function getSubjectByCode($subjectCode) {
     return $stmt->fetch();
 }
 
-// Function to delete a subject by subject code
+function updateSubject($subjectCode, $subjectName) {
+    $conn = getConnection();  // Get the database connection
+    $query = "UPDATE subjects SET subject_name = :subject_name WHERE subject_code = :subject_code";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':subject_code', $subjectCode);
+    $stmt->bindParam(':subject_name', $subjectName);
+
+    // Execute the update and return the result (true or false)
+    return $stmt->execute();
+}
+
+// Function to delete a subject by subject codea
 function deleteSubject($subjectCode) {
     $conn = getConnection();  // Get the database connection
 
