@@ -44,6 +44,16 @@ function getConnection() {
     }
 }
 
+function fetchSubjects() {
+    $conn = getConnection(); // Get the database connection
+    
+    // Prepare and execute the query to fetch all subjects
+    $stmt = $conn->query("SELECT * FROM subjects"); 
+    
+    // Return the fetched subjects as an associative array
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+}
+
 function login($email, $password) {
     $validateLogin = validateLoginCredentials($email, $password);
 
