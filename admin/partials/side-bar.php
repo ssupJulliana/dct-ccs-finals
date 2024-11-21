@@ -7,7 +7,7 @@
         <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
             <ul class="nav flex-column mb-auto ">
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center gap-2 py-3" href="<?=$dashboardPage ?>">
+                    <a class="nav-link d-flex align-items-center gap-2 py-3" href="<?=$dashboardPage; ?>">
                         <i class="fa-solid fa-gauge fa-fw me-2"></i> Dashboard
                     </a>
                 </li>
