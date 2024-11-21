@@ -5,10 +5,11 @@ guardDashboard();
 
 
 $logoutPage = 'logout.php';
-$addSubjectPage = './subject/add.php';
+$addSubjectPage = './add.php';
 $registerStudentPage = './student/register.php';
 require './partials/header.php';
 require './partials/side-bar.php';
+
 
 
 ?>
