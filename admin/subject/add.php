@@ -1,15 +1,15 @@
 <?php
-require '../../functions.php'; // Include your functions.php for database access and session management
+
+include '../../functions.php'; // Include your functions.php for database access and session management
 guardDashboard(); // Ensure the user is logged in
 
 // Define page URLs for the sidebar
-$dashboardPage = '../dashboard.php';   // Adjust the path to the dashboard
-$addSubjectPage = './add.php';  // Path to the 'add subject' page (relative to the current file)
+$dashboardPage = '../dashboard.php';   // Adjust the path to the dashboard// Path to the 'add subject' page (relative to the current file)
 $registerStudentPage = '../student/register.php';  // Path to the 'register student' page (adjusted)
 $logoutPage = '../logout.php';   // Path for logging out (adjusted)
 
-require '../partials/header.php'; 
-require '../partials/side-bar.php';
+include '../partials/header.php'; 
+include '../partials/side-bar.php';
 
 $errorMessage = '';
 
@@ -68,9 +68,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea class="form-control" id="subject_name" name="subject_name" rows="4" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Add Subject</button>
-    </form>
-</main>
+  
 
-<?php require './partials/footer.php'; ?>
+
+ <!-- Subject List Table -->
+ <div class="card p-4">
+        <h3 class="card-title text-center">Subject List</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            $allSubjects = fetchSubjects();
+            if (!empty($allSubjects)):
+                foreach ($allSubjects as $subjectDetails):
+            ?>
+                <tr>
+                    <td><?= htmlspecialchars($subjectDetails['subject_code']) ?></td>
+                    <td><?= htmlspecialchars($subjectDetails['subject_name']) ?></td>
+                    <td>
+                        <!-- Edit Option -->
+                        <a href="edit.php?subject_code=<?= urlencode($subjectDetails['subject_code']) ?>" class="btn btn-info btn-sm">Edit</a>
+
+                        <!-- Remove Option -->
+                        <a href="delete.php?subject_code=<?= urlencode($subjectDetails['subject_code']) ?>" class="btn btn-danger btn-sm">Remove</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="3" class="text-center">No subjects found.</td>
+            </tr>
+        <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<?php include
+'../partials/footer.php'; ?>
 
 
