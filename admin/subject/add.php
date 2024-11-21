@@ -10,6 +10,35 @@ $logoutPage = '../logout.php';   // Path for logging out (adjusted)
 
 require '../partials/header.php'; 
 require '../partials/side-bar.php';
+
+$errorMessage = '';
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $subjectCode = trim($_POST['subject_code']);
+    $subjectName = trim($_POST['subject_name']);
+
+    // Basic validation
+    if (empty($subjectCode) || empty($subjectName)) {
+        $errorMessage = 'Both subject name and description are required.';
+    } else {
+        // Proceed to add the subject to the database (you can adjust the query here)
+        $conn = getConnection();
+        $query = "INSERT INTO subjects (subject_code, subject_name) VALUES (:subject_code, :subject_name)";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':subject_code', $subjectCode);
+        $stmt->bindParam(':subject_name', $subjectName);
+
+        if ($stmt->execute()) {
+            // Redirect with a success parameter if the subject was added
+            header("Location: add.php?success=true");
+            exit;
+        } else {
+            $errorMessage = 'Failed to add the subject. Please try again.';
+        }
+    }
+}
+
 ?>
 
 
@@ -31,12 +60,12 @@ require '../partials/side-bar.php';
 
     <form method="POST" class="mt-4">
         <div class="mb-3">
-            <label for="subject_name" class="form-label">Subject Name</label>
-            <input type="text" class="form-control" id="subject_name" name="subject_name" required>
+            <label for="subject_code" class="form-label">Subject Code</label>
+            <input type="text" class="form-control" id="subject_code" name="subject_code" required>
         </div>
         <div class="mb-3">
-            <label for="subject_description" class="form-label">Subject Description</label>
-            <textarea class="form-control" id="subject_description" name="subject_description" rows="4" required></textarea>
+            <label for="subject_name" class="form-label">Subject Name</label>
+            <textarea class="form-control" id="subject_name" name="subject_name" rows="4" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Add Subject</button>
     </form>
