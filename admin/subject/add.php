@@ -42,9 +42,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 
+
 <!-- Main Content -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
     <h1 class="h2">Add New Subject</h1>
+   
+          
+            
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Subject</li>
+                </ol>
+            </nav>
+
 
     <?php if ($errorMessage): ?>
         <div class="alert alert-danger mt-3">
@@ -58,20 +70,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
 
-    <form method="POST" class="mt-4">
-        <div class="mb-3">
+    <div class="card p-4 mb-5">
+                <form method="POST">
+                    <div class="mb-3">
             <label for="subject_code" class="form-label">Subject Code</label>
-            <input type="text" class="form-control" id="subject_code" name="subject_code" required>
+            <input type="text" class="form-control" id="subject_code" name="subject_code">
         </div>
         <div class="mb-3">
             <label for="subject_name" class="form-label">Subject Name</label>
-            <textarea class="form-control" id="subject_name" name="subject_name" rows="4" required></textarea>
+            <input type= "text" class="form-control" id="subject_name" name="subject_name">
         </div>
-        <button type="submit" class="btn btn-primary">Add Subject</button>
+        <button type="submit" class="btn btn-primary w-100">Add Subject</button>
   
 
 
- <!-- Subject List Table -->
+ <!-- Subject List Table -->s
  <div class="card p-4">
         <h3 class="card-title text-center">Subject List</h3>
         <table class="table table-striped">
