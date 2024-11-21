@@ -20,12 +20,7 @@ if (isset($_GET['subject_code'])) {
     $subjectCode = $_GET['subject_code'];
 
     // Fetch the subject details to show to the user for editing
-    $conn = getConnection();
-    $query = "SELECT * FROM subjects WHERE subject_code = :subject_code";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':subject_code', $subjectCode);
-    $stmt->execute();
-    $subjectDetails = $stmt->fetch();
+    $subjectDetails = getSubjectByCode($subjectCode);
 
     if (!$subjectDetails) {
         // If no such subject found, redirect back to the add page
@@ -92,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <!-- Card for Edit Subject Form -->
-    <div class="card p-4 mb-5">
+    <div class="card p-5 mb-5">
         <form method="POST">
             <div class="mb-3 form-floating">
                 <input type="text" class="form-control" id="subject_code" name="subject_code" 
