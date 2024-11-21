@@ -171,6 +171,29 @@ function deleteSubject($subjectCode) {
     return $deleteStmt->execute();
 }
 
+// Count the number of subjects
+function countSubjects() {
+    $conn = getConnection();
+    $query = "SELECT COUNT(*) FROM subjects";
+    $stmt = $conn->query($query);
+    return $stmt->fetchColumn();
+}
+
+// Count the number of students
+function countStudents() {
+    $conn = getConnection();
+    $query = "SELECT COUNT(*) FROM students";
+    $stmt = $conn->query($query);
+    return $stmt->fetchColumn();
+}
+
+function isActivePage($pageName) {
+    // Get the current page's filename from the URL
+    $currentPage = basename($_SERVER['PHP_SELF']);
+    
+    // Compare the current page with the passed $pageName and return 'font-weight-bold' if they match
+    return $currentPage == $pageName ? 'font-weight-bold' : '';
+}
 
 
 ?>
