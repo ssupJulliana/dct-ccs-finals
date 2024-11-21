@@ -12,13 +12,7 @@ $logoutPage = '../logout.php';  // Path for logging out
 if (isset($_GET['subject_code'])) {
     $subjectCode = $_GET['subject_code'];
 
-    // Fetch the subject details to show to the user for confirmation
-    $conn = getConnection();
-    $query = "SELECT * FROM subjects WHERE subject_code = :subject_code";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':subject_code', $subjectCode);
-    $stmt->execute();
-    $subjectDetails = $stmt->fetch();
+    $subjectDetails = getSubjectByCode($subjectCode);
 
     if (!$subjectDetails) {
         // If no such subject found, redirect back to the add page
@@ -28,12 +22,7 @@ if (isset($_GET['subject_code'])) {
 
     // Handle the deletion process
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Deleting the subject from the database
-        $deleteQuery = "DELETE FROM subjects WHERE subject_code = :subject_code";
-        $deleteStmt = $conn->prepare($deleteQuery);
-        $deleteStmt->bindParam(':subject_code', $subjectCode);
-
-        if ($deleteStmt->execute()) {
+        if (deleteSubject($subjectCode)) {
             // Redirect back to the add subject page after successful deletion
             header("Location: $addSubjectPage?deleted=true");
             exit;
@@ -46,6 +35,9 @@ if (isset($_GET['subject_code'])) {
     header("Location: $addSubjectPage");
     exit;
 }
+        
+
+
 
 include '../partials/header.php';
 include '../partials/side-bar.php';
@@ -71,23 +63,18 @@ include '../partials/side-bar.php';
         </div>
     <?php endif; ?>
 
-    <div class="card p-4 mb-5">
+    <div class="card p-5 mb-5">
         <h5 class="card-title">Are you sure you want to delete the following subject record?</h5>
-        <table class="table">
-            <tr>
-                <th>Subject Code</th>
-                <td><?= htmlspecialchars($subjectDetails['subject_code']) ?></td>
-            </tr>
-            <tr>
-                <th>Subject Name</th>
-                <td><?= htmlspecialchars($subjectDetails['subject_name']) ?></td>
-            </tr>
-        </table>
+        <ul>
+            <li><strong>Subject Code:</strong> <?= htmlspecialchars($subjectDetails['subject_code']) ?></li>
+            <li><strong>Subject Name:</strong> <?= htmlspecialchars($subjectDetails['subject_name']) ?></li>
+        </ul>
 
         <!-- Form to delete the subject -->
         <form method="POST">
-            <button type="submit" class="btn btn-danger">Delete Subject Record</button>
-            <a href="<?= $addSubjectPage; ?>" class="btn btn-secondary">Cancel</a>
+        <div class="d-flex justify-content-start gap-1">
+             <a href="<?= $addSubjectPage; ?>" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Delete Subject Record</button>
         </form>
     </div>
 </main>

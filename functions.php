@@ -133,5 +133,33 @@ function displayErrors($errors) {
     return $errorHtml;
 }
 
+// Function to fetch subject details by subject code
+function getSubjectByCode($subjectCode) {
+    $conn = getConnection();  // Get the database connection
+
+    // SQL query to select the subject with the provided subject code
+    $query = "SELECT * FROM subjects WHERE subject_code = :subject_code";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':subject_code', $subjectCode);
+    $stmt->execute();
+
+    // Return the subject details as an associative array
+    return $stmt->fetch();
+}
+
+// Function to delete a subject by subject code
+function deleteSubject($subjectCode) {
+    $conn = getConnection();  // Get the database connection
+
+    // SQL query to delete the subject with the provided subject code
+    $deleteQuery = "DELETE FROM subjects WHERE subject_code = :subject_code";
+    $deleteStmt = $conn->prepare($deleteQuery);
+    $deleteStmt->bindParam(':subject_code', $subjectCode);
+
+    // Execute the deletion query and return the result
+    return $deleteStmt->execute();
+}
+
+
 
 ?>
